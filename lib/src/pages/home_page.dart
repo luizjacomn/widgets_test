@@ -7,6 +7,7 @@ import 'package:widgets_test/src/pages/page_2.dart';
 import 'package:widgets_test/src/pages/page_3.dart';
 import 'package:widgets_test/src/utils/nav.dart';
 import 'package:widgets_test/src/widgets/blue_button.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -55,25 +56,28 @@ class HomePage extends StatelessWidget {
   }
 
   _buttons(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            BlueButton('ListView', () => _navigate(context, ListViewPage())),
-            BlueButton('Page 2', () => _navigate(context, Page2())),
-            BlueButton('Page 3', () => _navigate(context, Page3())),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            BlueButton('Snack', _snack),
-            BlueButton('Dialog', _dialog),
-            BlueButton('Toast', _toast),
-          ],
-        ),
-      ],
+    return Builder(
+      builder: (context) => Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  BlueButton(
+                      'ListView', () => _navigate(context, ListViewPage())),
+                  BlueButton('Page 2', () => _navigate(context, Page2())),
+                  BlueButton('Page 3', () => _navigate(context, Page3())),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  BlueButton('Snack', () => _snack(context)),
+                  BlueButton('Dialog', () => _dialog(context)),
+                  BlueButton('Toast', _toast),
+                ],
+              ),
+            ],
+          ),
     );
   }
 
@@ -105,15 +109,49 @@ class HomePage extends StatelessWidget {
     print('>> $msg');
   }
 
-  void _snack() {
-    print('snack');
+  void _snack(context) {
+    Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Snack bar'),
+        action: SnackBarAction(
+          label: 'OK',
+          textColor: Colors.yellowAccent,
+          onPressed: () {},
+        ),
+      ),
+    );
   }
 
-  void _dialog() {
-    print('dialog');
+  void _dialog(context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: AlertDialog(
+            content: Text('Dialog'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('OK'),
+                onPressed: () => pop(context),
+              )
+            ],
+          ),
+        );
+      },
+    );
   }
 
   void _toast() {
-    print('toast');
+    Fluttertoast.showToast(
+        msg: 'Toast',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.black54,
+        textColor: Colors.white,
+        fontSize: 12.0
+    );
   }
 }
