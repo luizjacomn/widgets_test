@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:widgets_test/src/utils/nav.dart';
+import 'package:widgets_test/src/widgets/blue_button.dart';
 
 class Page3 extends StatelessWidget {
   @override
@@ -13,13 +15,14 @@ class Page3 extends StatelessWidget {
 
   _body(BuildContext context) {
     return Center(
-        child: RaisedButton(
-      child: Text('Voltar'.toUpperCase()),
-      onPressed: () => _onPop(context),
-    ));
+      child: BlueButton(
+        'Voltar',
+        () => _onPop(context),
+      ),
+    );
   }
 
   _onPop(BuildContext context) {
-    Navigator.pop(context, 'Voltando da tela 3');
+    pop(context, toReturn: 'Voltando da tela 3');
   }
 }

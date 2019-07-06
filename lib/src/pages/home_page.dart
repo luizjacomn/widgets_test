@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:widgets_test/src/pages/list_view_page.dart';
 import 'package:widgets_test/src/pages/page_2.dart';
 import 'package:widgets_test/src/pages/page_3.dart';
+import 'package:widgets_test/src/utils/nav.dart';
+import 'package:widgets_test/src/widgets/blue_button.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -57,17 +60,17 @@ class HomePage extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            _button(context, 'ListView', _listView),
-            _button(context, 'Page 2', () => _navigate(context, Page2())),
-            _button(context, 'Page 3', () => _navigate(context, Page3())),
+            BlueButton('ListView', () => _navigate(context, ListViewPage())),
+            BlueButton('Page 2', () => _navigate(context, Page2())),
+            BlueButton('Page 3', () => _navigate(context, Page3())),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            _button(context, 'Snack', _snack),
-            _button(context, 'Dialog', _dialog),
-            _button(context, 'Toast', _toast),
+            BlueButton('Snack', _snack),
+            BlueButton('Dialog', _dialog),
+            BlueButton('Toast', _toast),
           ],
         ),
       ],
@@ -86,15 +89,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  _button(BuildContext context, String text, Function onPressed) {
-    return RaisedButton(
-      color: Colors.blue,
-      textColor: Colors.yellowAccent,
-      child: Text(text.toUpperCase()),
-      onPressed: onPressed,
-    );
-  }
-
   _text() {
     return Text(
       'Dogs',
@@ -107,12 +101,8 @@ class HomePage extends StatelessWidget {
   }
 
   Future _navigate(BuildContext context, Widget page) async {
-    String msg = await Navigator.push(context, CupertinoPageRoute(builder: (context) => page));
+    String msg = await push(context, page);
     print('>> $msg');
-  }
-
-  void _listView() {
-    print('list view');
   }
 
   void _snack() {
