@@ -8,22 +8,45 @@ import 'package:widgets_test/src/pages/page_3.dart';
 import 'package:widgets_test/src/utils/nav.dart';
 import 'package:widgets_test/src/widgets/blue_button.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:widgets_test/src/widgets/drawer_list.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: Platform.isIOS ? true : false,
-        title: Text(
-          'Hello Flutter',
-          style: TextStyle(
-            color: Colors.yellowAccent,
-          ),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+            centerTitle: Platform.isIOS ? true : false,
+            title: Text(
+              'Hello Flutter',
+              style: TextStyle(
+                color: Colors.yellowAccent,
+              ),
+            ),
+            bottom: TabBar(
+              tabs: <Widget>[
+                Tab(child: Text('Tab 1')),
+                Tab(child: Text('Tab 2')),
+              ],
+            )),
+        body: TabBarView(
+          children: <Widget>[
+            _buildBody(context),
+            Container(),
+          ],
+        ),
+        drawer: DrawerList(),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.home),
+          onPressed: _clickFab,
         ),
       ),
-      body: _buildBody(context),
     );
+  }
+
+  _clickFab() {
+    print('fab');
   }
 
   _buildBody(BuildContext context) {
@@ -151,7 +174,6 @@ class HomePage extends StatelessWidget {
         timeInSecForIos: 1,
         backgroundColor: Colors.black54,
         textColor: Colors.white,
-        fontSize: 12.0
-    );
+        fontSize: 12.0);
   }
 }
